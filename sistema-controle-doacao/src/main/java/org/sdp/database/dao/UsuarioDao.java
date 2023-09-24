@@ -1,4 +1,4 @@
-package org.sdp.banco.dao;
+package org.sdp.database.dao;
 
 import org.sdp.model.Usuario;
 

@@ -1,6 +1,6 @@
 package org.sdp;
 
-import org.sdp.banco.dao.UsuarioDao;
+import org.sdp.database.dao.UsuarioDao;
 import org.sdp.model.Usuario;
 import org.sdp.util.JPAUtil;
 

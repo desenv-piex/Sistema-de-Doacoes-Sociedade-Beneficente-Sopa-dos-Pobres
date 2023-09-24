@@ -70,7 +70,7 @@ public class CadastroProduto extends javax.swing.JDialog {
         jLabel3.setText("Valor do produto:");
 
         jButtonInserirTipo.setText("[+] Inserir novo tipo");
-        jButtonInserirTipo.setToolTipText("Inserir novo tipo\npermite cadastrar um novo\ntipo de produto ainda \nnão incluido no sistema");
+        jButtonInserirTipo.setToolTipText("Inserir novo tipo\npermite cadastrar um\ntipo de produto ainda \nnão incluido no sistema");
         jButtonInserirTipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonInserirTipoActionPerformed(evt);

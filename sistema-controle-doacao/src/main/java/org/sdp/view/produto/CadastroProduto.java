@@ -4,11 +4,9 @@
  */
 package org.sdp.view.produto;
 
-import org.sdp.view.doacao.CadastroDoacao;
-
 /**
  *
- * @author anacl
+ * @author Nikão
  */
 public class CadastroProduto extends javax.swing.JDialog {
 
@@ -29,43 +27,154 @@ public class CadastroProduto extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jComboBoxTipoProduto = new javax.swing.JComboBox<>();
+        jBtnSairProduto = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jFormattedTextFieldValorProduto = new javax.swing.JFormattedTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jButtonInserirTipo = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jBtnSalvarProduto = new javax.swing.JButton();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
+        jMenu7 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
+        jMenu6 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastrar novo produto");
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setBackground(new java.awt.Color(254, 240, 218));
+
+        jComboBoxTipoProduto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Arroz", "Feijão", "Detergente", "Legumes", "Leite", " ", " " }));
+
+        jBtnSairProduto.setBackground(new java.awt.Color(207, 180, 120));
+        jBtnSairProduto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jBtnSairProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/saida2.png"))); // NOI18N
+        jBtnSairProduto.setText("Sair");
+        jBtnSairProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jBtnSairProdutoActionPerformed(evt);
             }
         });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("Tipo de produto:");
+
+        jFormattedTextFieldValorProduto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setText("Valor do produto:");
+
+        jButtonInserirTipo.setText("[+] Inserir novo tipo");
+        jButtonInserirTipo.setToolTipText("Inserir novo tipo\npermite cadastrar um novo\ntipo de produto ainda \nnão incluido no sistema");
+        jButtonInserirTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonInserirTipoActionPerformed(evt);
+            }
+        });
+
+        jBtnSalvarProduto.setBackground(new java.awt.Color(117, 181, 47));
+        jBtnSalvarProduto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jBtnSalvarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/doacao.png"))); // NOI18N
+        jBtnSalvarProduto.setText("Salvar");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jComboBoxTipoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonInserirTipo))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jBtnSairProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBtnSalvarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jFormattedTextFieldValorProduto)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addGap(122, 122, 122)
+                            .addComponent(jLabel4))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBoxTipoProduto)
+                    .addComponent(jButtonInserirTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(19, 19, 19)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jFormattedTextFieldValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jBtnSalvarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBtnSairProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(258, 258, 258)
+                .addComponent(jLabel4)
+                .addContainerGap())
+        );
+
+        jMenuBar2.setBackground(new java.awt.Color(59, 31, 27));
+        jMenuBar2.setToolTipText("");
+
+        jMenu3.setText("Cadastros");
+
+        jMenu8.setText("Cadastro de Doação ");
+        jMenu3.add(jMenu8);
+
+        jMenu7.setText("Cadastro de Produto");
+        jMenu3.add(jMenu7);
+
+        jMenuBar2.add(jMenu3);
+
+        jMenu4.setText("Relatórios");
+        jMenuBar2.add(jMenu4);
+
+        jMenu5.setText("Ajuda");
+        jMenuBar2.add(jMenu5);
+
+        jMenu6.setText("Sair");
+        jMenuBar2.add(jMenu6);
+
+        setJMenuBar(jMenuBar2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(233, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(92, 92, 92))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(138, 138, 138)
-                .addComponent(jButton1)
-                .addContainerGap(139, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        CadastroDoacao nf = new CadastroDoacao (null,true);
-        
-        nf.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jBtnSairProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSairProdutoActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jBtnSairProdutoActionPerformed
+
+    private void jButtonInserirTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInserirTipoActionPerformed
+        CadastrarNovoTipoProduto cntp = new CadastrarNovoTipoProduto(null, true);
+        cntp.setVisible(true);
+    }//GEN-LAST:event_jButtonInserirTipoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -110,6 +219,21 @@ public class CadastroProduto extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jBtnSairProduto;
+    private javax.swing.JButton jBtnSalvarProduto;
+    private javax.swing.JButton jButtonInserirTipo;
+    private javax.swing.JComboBox<String> jComboBoxTipoProduto;
+    private javax.swing.JFormattedTextField jFormattedTextFieldValorProduto;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

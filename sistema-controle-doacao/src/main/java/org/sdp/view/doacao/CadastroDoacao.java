@@ -171,7 +171,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
 
         btnVoltar.setBackground(new java.awt.Color(207, 180, 120));
         btnVoltar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/saida.png"))); // NOI18N
+        btnVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/saida2.png"))); // NOI18N
         btnVoltar.setText("Sair");
         btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

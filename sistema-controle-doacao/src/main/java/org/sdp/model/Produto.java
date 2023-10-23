@@ -4,7 +4,7 @@ public class Produto {
     private Long idProduto;
     private String nomeProduto;
     private int qntProduto;
-    private double ValorProduto;
+    private double valorProduto;
 
     public Produto() {
     }
@@ -13,7 +13,7 @@ public class Produto {
         this.idProduto = idProduto;
         this.nomeProduto = nomeProduto;
         this.qntProduto = qntProduto;
-        ValorProduto = valorProduto;
+        valorProduto = valorProduto;
     }
 
     public Long getIdProduto() {
@@ -41,10 +41,10 @@ public class Produto {
     }
 
     public double getValorProduto() {
-        return ValorProduto;
+        return valorProduto;
     }
 
     public void setValorProduto(double valorProduto) {
-        ValorProduto = valorProduto;
+        valorProduto = valorProduto;
     }
 }

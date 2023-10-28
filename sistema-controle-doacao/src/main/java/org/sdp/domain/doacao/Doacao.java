@@ -1,11 +1,20 @@
-package org.sdp.model;
+package org.sdp.domain.doacao;
 
 
-import org.sdp.model.e.ETipoDoacao;
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import org.sdp.domain.produto.Produto;
+import org.sdp.domain.e.ETipoDoacao;
 
 import java.util.ArrayList;
 
+
+@Table(name = "doacoes")
+@Entity(name = "Doacao")
+@EqualsAndHashCode(of = "id")
 public class Doacao {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private ETipoDoacao tipoDoacao;
     private ArrayList<Produto> produtos;
@@ -53,7 +62,7 @@ public class Doacao {
 
         }else{
             for (Produto produto:produtos) {
-                valTot = produto.getValorProduto()*produto.getQntProduto();
+                valTot = produto.getValorProduto()*produto.getValorProduto();
             }
         }
         return valTot;

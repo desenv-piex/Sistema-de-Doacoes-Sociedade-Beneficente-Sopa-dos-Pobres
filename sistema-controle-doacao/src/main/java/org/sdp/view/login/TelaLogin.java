@@ -15,6 +15,7 @@ public class TelaLogin extends javax.swing.JFrame {
      */
     public TelaLogin() {
         initComponents();
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icon_sopa.png")).getImage());
     }
 
     /**

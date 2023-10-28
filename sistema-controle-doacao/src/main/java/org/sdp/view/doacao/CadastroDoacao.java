@@ -16,10 +16,11 @@ public class CadastroDoacao extends javax.swing.JDialog {
     public CadastroDoacao(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icon_sopa.png")).getImage());
         
-       jBtnSalvarValor.setVisible(false);
-       CampoValor.setVisible(false);
-       labelvalor.setVisible(false);
+        jBtnSalvarValor.setVisible(false);
+        CampoValor.setVisible(false);
+        labelvalor.setVisible(false);
     }
 
     /**
@@ -292,6 +293,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSelecionarActionPerformed
@@ -344,7 +346,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
     }//GEN-LAST:event_jBPesquisa1ActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**

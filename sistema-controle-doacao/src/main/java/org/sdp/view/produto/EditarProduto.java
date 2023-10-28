@@ -16,6 +16,7 @@ public class EditarProduto extends javax.swing.JDialog {
     public EditarProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icon_sopa.png")).getImage());
     }
 
     /**
@@ -64,6 +65,11 @@ public class EditarProduto extends javax.swing.JDialog {
         jBtnSalvarProduto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jBtnSalvarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/edit.png"))); // NOI18N
         jBtnSalvarProduto.setText("Editar");
+        jBtnSalvarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnSalvarProdutoActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 51, 0));
@@ -138,6 +144,10 @@ public class EditarProduto extends javax.swing.JDialog {
     private void jBtnSairProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSairProdutoActionPerformed
         this.dispose();
     }//GEN-LAST:event_jBtnSairProdutoActionPerformed
+
+    private void jBtnSalvarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarProdutoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jBtnSalvarProdutoActionPerformed
 
     /**
      * @param args the command line arguments

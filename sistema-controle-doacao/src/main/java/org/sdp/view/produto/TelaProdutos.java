@@ -16,6 +16,7 @@ public class TelaProdutos extends javax.swing.JDialog {
     public TelaProdutos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icon_sopa.png")).getImage());
     }
 
     /**
@@ -81,6 +82,11 @@ public class TelaProdutos extends javax.swing.JDialog {
         jbNovoProduto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jbNovoProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/new.png"))); // NOI18N
         jbNovoProduto.setText("Inserir");
+        jbNovoProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbNovoProdutoActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -90,6 +96,11 @@ public class TelaProdutos extends javax.swing.JDialog {
         jbEditarProduto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jbEditarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/edit.png"))); // NOI18N
         jbEditarProduto.setText("Editar");
+        jbEditarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEditarProdutoActionPerformed(evt);
+            }
+        });
 
         jbExcluirProduto.setBackground(new java.awt.Color(204, 0, 0));
         jbExcluirProduto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -234,6 +245,16 @@ public class TelaProdutos extends javax.swing.JDialog {
     private void jbFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbFiltrarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbFiltrarActionPerformed
+
+    private void jbNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNovoProdutoActionPerformed
+        CadastroProduto cp = new CadastroProduto(null, true);
+        cp.setVisible(true);
+    }//GEN-LAST:event_jbNovoProdutoActionPerformed
+
+    private void jbEditarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarProdutoActionPerformed
+        EditarProduto ep = new EditarProduto(null, true);
+        ep.setVisible(true);
+    }//GEN-LAST:event_jbEditarProdutoActionPerformed
 
     /**
      * @param args the command line arguments

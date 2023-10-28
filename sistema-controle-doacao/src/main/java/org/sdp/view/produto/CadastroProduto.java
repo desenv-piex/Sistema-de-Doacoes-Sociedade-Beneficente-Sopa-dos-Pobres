@@ -16,6 +16,7 @@ public class CadastroProduto extends javax.swing.JDialog {
     public CadastroProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icon_sopa.png")).getImage());
     }
 
     /**

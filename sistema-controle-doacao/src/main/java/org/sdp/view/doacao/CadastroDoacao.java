@@ -16,10 +16,11 @@ public class CadastroDoacao extends javax.swing.JDialog {
     public CadastroDoacao(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icon_sopa.png")).getImage());
         
-       jBtnSalvarValor.setVisible(false);
-       CampoValor.setVisible(false);
-       labelvalor.setVisible(false);
+        jBtnSalvarValor.setVisible(false);
+        CampoValor.setVisible(false);
+        labelvalor.setVisible(false);
     }
 
     /**
@@ -48,13 +49,6 @@ public class CadastroDoacao extends javax.swing.JDialog {
         jBtnSalvarValor = new javax.swing.JButton();
         jBtnSalvarPRoduto = new javax.swing.JButton();
         btnVoltar = new javax.swing.JButton();
-        jMenuBar2 = new javax.swing.JMenuBar();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
-        jMenu7 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu6 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -184,7 +178,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -197,7 +191,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jBPesquisa1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jBtnSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)))
+                            .addComponent(jBtnSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jlProdutos2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -254,37 +248,11 @@ public class CadastroDoacao extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jMenuBar2.setBackground(new java.awt.Color(59, 31, 27));
-        jMenuBar2.setToolTipText("");
-
-        jMenu3.setText("Cadastros");
-
-        jMenu8.setText("Cadastro de Doação ");
-        jMenu3.add(jMenu8);
-
-        jMenu7.setText("Cadastro de Produto");
-        jMenu3.add(jMenu7);
-
-        jMenuBar2.add(jMenu3);
-
-        jMenu4.setText("Relatórios");
-        jMenuBar2.add(jMenu4);
-
-        jMenu5.setText("Ajuda");
-        jMenuBar2.add(jMenu5);
-
-        jMenu6.setText("Sair");
-        jMenuBar2.add(jMenu6);
-
-        setJMenuBar(jMenuBar2);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 6, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,6 +260,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSelecionarActionPerformed
@@ -344,7 +313,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
     }//GEN-LAST:event_jBPesquisa1ActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**
@@ -406,13 +375,6 @@ public class CadastroDoacao extends javax.swing.JDialog {
     private javax.swing.JButton jBtnSelecionar;
     private javax.swing.JLabel jLProdutos1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
-    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

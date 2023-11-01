@@ -6,12 +6,9 @@ import lombok.EqualsAndHashCode;
 import org.sdp.domain.produto.Produto;
 import org.sdp.domain.e.ETipoDoacao;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
+<<<<<<< HEAD:sistema-controle-doacao/src/main/java/org/sdp/domain/doacao/Doacao.java
 <<<<<<< HEAD:sistema-controle-doacao/src/main/java/org/sdp/model/Doacao.java
 @Entity
 @Table(name = "doacao") // Nome da tabela no banco de dados
@@ -21,30 +18,20 @@ import java.util.List;
 @Entity(name = "Doacao")
 @EqualsAndHashCode(of = "id")
 >>>>>>> main:sistema-controle-doacao/src/main/java/org/sdp/domain/doacao/Doacao.java
+=======
+>>>>>>> parent of fc6a3ce (finalizando configuração e migrade do banco de dados usando hibernate):sistema-controle-doacao/src/main/java/org/sdp/model/Doacao.java
 public class Doacao {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Enumerated(EnumType.STRING) // Mapeia o enum como uma string (ou podemos usar EnumType.ORDINAL para mapear como um número)
     private ETipoDoacao tipoDoacao;
-
-    @OneToMany(mappedBy = "doacao") // Mapeia o relacionamento entre Doacao e Produto
-    private List<Produto> produtos;
-
-    @Temporal(TemporalType.TIMESTAMP) // Mapeia o atributo de data como LocalDateTime
-    @Column(name = "data_doacao") // Nome da coluna no banco de dados
-    private Date dataDoacao;
+    private ArrayList<Produto> produtos;
 
     public Doacao() {
-        this.produtos = new ArrayList<>();
     }
 
-    public Doacao(Long id, ETipoDoacao tipoDoacao, List<Produto> produtos, Date dataDoacao) {
+    public Doacao(Long id, ETipoDoacao tipoDoacao, ArrayList<Produto> produtos) {
         this.id = id;
         this.tipoDoacao = tipoDoacao;
         this.produtos = produtos;
-        this.dataDoacao = dataDoacao;
     }
 
     public Long getId() {
@@ -63,20 +50,12 @@ public class Doacao {
         this.tipoDoacao = tipoDoacao;
     }
 
-    public List<Produto> getProdutos() {
+    public ArrayList<Produto> getProdutos() {
         return produtos;
     }
 
-    public void setProdutos(List<Produto> produtos) {
+    public void setProdutos(ArrayList<Produto> produtos) {
         this.produtos = produtos;
-    }
-
-    public Date getDataDoacao() {
-        return dataDoacao;
-    }
-
-    public void setDataDoacao(Date dataDoacao) {
-        this.dataDoacao = dataDoacao;
     }
 
     public double valorTotalDoado(){

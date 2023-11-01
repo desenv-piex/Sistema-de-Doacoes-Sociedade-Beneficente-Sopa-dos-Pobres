@@ -4,13 +4,15 @@ package org.sdp.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tbUsuario")
+@Table(name = "usuario")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "login")
     private String login;
+    @Column(name = "senha")
     private String senha;
 
     public Usuario(){
@@ -19,6 +21,10 @@ public class Usuario {
     public Usuario(String login, String senha) {
         this.login = login;
         this.senha = senha;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getLogin() {

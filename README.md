@@ -9,7 +9,7 @@ O sistema é um facilitador para a instuição, sendo uma aplicação de cadastr
 ## Tecnologias usadas
 
 * Java
-* SQLite
+* SQL
 * JavaSwing
 * JPA: Hibernate
 * Git

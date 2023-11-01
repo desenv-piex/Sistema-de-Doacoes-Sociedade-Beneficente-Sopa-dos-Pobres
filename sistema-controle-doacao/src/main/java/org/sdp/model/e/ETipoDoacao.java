@@ -1,4 +1,4 @@
-package org.sdp.domain.e;
+package org.sdp.model.e;
 
 public enum ETipoDoacao {
     Produtos, Dinheiro

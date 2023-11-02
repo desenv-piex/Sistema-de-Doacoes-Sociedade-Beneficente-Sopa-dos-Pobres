@@ -4,6 +4,10 @@
  */
 package org.sdp.view.produto;
 
+import javax.persistence.PersistenceException;
+import javax.swing.JOptionPane;
+import org.sdp.database.dao.produto.ProdutoDao;
+import org.sdp.model.Produto;
 import org.sdp.util.ExcelExporter;
 
 /**
@@ -42,6 +46,11 @@ public class EditarProduto extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar novo produto");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(254, 240, 218));
 
@@ -148,8 +157,26 @@ public class EditarProduto extends javax.swing.JDialog {
     }//GEN-LAST:event_jBtnSairProdutoActionPerformed
 
     private void jBtnSalvarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarProdutoActionPerformed
+        if (jtfNomeProduto.getText().equals("") || jFormattedTextFieldValorProduto.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos antes de editar! ");
+            return;
+        }
         
+        double valor = Double.parseDouble(jFormattedTextFieldValorProduto.getText().replace(',','.'));
+        Produto p = new Produto(produto.getId(), jtfNomeProduto.getText(),produto.getQntProduto(), valor);
+        
+        try {
+            new ProdutoDao().atualizar(p);
+            JOptionPane.showMessageDialog(null, "Produto alterado com sucesso! ");
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel alterar o produto no banco de dados. " + ex.getMessage());
+        }
     }//GEN-LAST:event_jBtnSalvarProdutoActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        jtfNomeProduto.setText(produto.getNomeProduto());
+        jFormattedTextFieldValorProduto.setText(produto.getValorProduto()+"");
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -193,6 +220,17 @@ public class EditarProduto extends javax.swing.JDialog {
             }
         });
     }
+    
+    private Produto produto;
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnSairProduto;

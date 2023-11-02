@@ -33,10 +33,18 @@ public class ProdutoDao implements IGenericDAO<Produto, Long> {
     }
 
     @Override
-    public void atualizar(Produto Produto) throws PersistenceException {
+    public void atualizar(Produto produto) throws PersistenceException {
         try{
             this.em.getTransaction().begin();
-            this.em.merge(Produto);
+            this.em.merge(produto);
+
+           /* String jpql = "UPDATE Produto p SET p.nomeProduto = :nome, p.valorProduto = :valor WHERE p.id = :idProd";
+            em.createQuery(jpql, Produto.class)
+                    .setParameter("nome", produto.getNomeProduto())
+                    .setParameter("valor", produto.getValorProduto())
+                    .setParameter("idProd", produto.getId())
+                    .executeUpdate();*/
+
             this.em.getTransaction().commit(); // Confirma a transação
         } catch (PersistenceException e) {
             this.em.getTransaction().rollback();
@@ -101,7 +109,7 @@ public class ProdutoDao implements IGenericDAO<Produto, Long> {
         List<Produto> produtos = new ArrayList<>();
 
         try{
-            String jpql = "SELECT p FROM Produto p WHERE p.nomeProduto = :nomeProduto";
+            String jpql = "SELECT p FROM Produto p WHERE p.nomeProduto LIKE :nomeProduto";
             produtos = em.createQuery(jpql, Produto.class)
                     .setParameter("nomeProduto", nomeProduto)
                     .getResultList();

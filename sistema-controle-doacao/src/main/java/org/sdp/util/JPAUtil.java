@@ -3,6 +3,8 @@ package org.sdp.util;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
+import javax.swing.*;
 
 public class JPAUtil {
     private static final String PERSISTENCE_UNIT_NAME = "MySqlDB"; // O nome da unidade de persistência que você configurou no arquivo persistence.xml
@@ -13,8 +15,9 @@ public class JPAUtil {
         try {
             // Inicializa o EntityManagerFactory usando a unidade de persistência definida no persistence.xml
             entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        } catch (Throwable ex) {
-            throw new ExceptionInInitializerError(ex);
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel conectar com o banco de dados. " + ex.getMessage());
+            throw ex;
         }
     }
 

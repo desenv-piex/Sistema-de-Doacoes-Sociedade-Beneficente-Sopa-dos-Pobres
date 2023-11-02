@@ -34,16 +34,25 @@ public class ProdutoDao implements IGenericDAO<Produto, Long> {
 
     @Override
     public void atualizar(Produto Produto) throws PersistenceException {
-        this.em.merge(Produto);
+        try{
+            this.em.getTransaction().begin();
+            this.em.merge(Produto);
+            this.em.getTransaction().commit(); // Confirma a transação
+        } catch (PersistenceException e) {
+            this.em.getTransaction().rollback();
+            throw e;
+        } finally {
+            this.em.close();
+        }
     }
 
     @Override
-    public void remover(Produto Produto) throws PersistenceException {
+    public void remover(Produto produto) throws PersistenceException {
         try{
             this.em.getTransaction().begin();
 
-            Produto = em.merge(Produto);
-            this.em.remove(Produto);
+            produto = em.merge(produto);
+            this.em.remove(produto);
 
             this.em.getTransaction().commit(); // Confirma a transação
         } catch (PersistenceException e) {
@@ -56,11 +65,11 @@ public class ProdutoDao implements IGenericDAO<Produto, Long> {
 
     @Override
     public Produto buscar(Long id) throws PersistenceException {
-        Produto u = new Produto();
+        Produto produto = new Produto();
         try{
             this.em.getTransaction().begin();
 
-            u = em.find(Produto.class, id);
+            produto = em.find(Produto.class, id);
 
             this.em.getTransaction().commit(); // Confirma a transação
         } catch (PersistenceException e) {
@@ -70,35 +79,40 @@ public class ProdutoDao implements IGenericDAO<Produto, Long> {
             this.em.close();
         }
 
-        return u;
+        return produto;
     }
 
     @Override
     public List<Produto> buscarTodos() throws PersistenceException {
         List<Produto> produtos = new ArrayList<>();
         try{
-            this.em.getTransaction().begin();
-
             String jpql = "SELECT p FROM Produto p";
-            produtos = em.createQuery(jpql, Produto.class).getResultList();
-
-            this.em.getTransaction().commit(); // Confirma a transação
+            produtos = this.em.createQuery(jpql, Produto.class).getResultList();
         } catch (PersistenceException e) {
-            this.em.getTransaction().rollback();
             throw e;
         } finally {
             this.em.close();
         }
 
-
         return produtos;
     }
 
     public List<Produto> buscarPorNomeProduto(String nomeProduto){
-        String jpql = "SELECT p FROM Produto p WHERE p.nomeProduto = :nomeProduto";
-        return em.createQuery(jpql, Produto.class)
-                .setParameter("nomeProduto", nomeProduto)
-                .getResultList();
+        List<Produto> produtos = new ArrayList<>();
+
+        try{
+            String jpql = "SELECT p FROM Produto p WHERE p.nomeProduto = :nomeProduto";
+            produtos = em.createQuery(jpql, Produto.class)
+                    .setParameter("nomeProduto", nomeProduto)
+                    .getResultList();
+
+        } catch (PersistenceException e) {
+            throw e;
+        } finally {
+            this.em.close();
+        }
+
+        return produtos;
     }
 
 }

@@ -76,20 +76,19 @@ public class DoacaoDao implements IGenericDAO<Doacao, Long> {
 
     @Override
     public List<Doacao> buscarTodos() throws PersistenceException {
-        String jpql = "SELECT u from Produto u";
-        //return em.createQuery(jpql, Produto.class).getResultList();
+        List<Doacao> doacaos = new ArrayList<>();
+        try {
+            String jpql = "SELECT d FROM Doacao d";
+            doacaos = this.em.createQuery(jpql,Doacao.class).getResultList();
+        }catch (PersistenceException e){
+            throw e;
+        }finally {
+            this.em.close();
+        }
 
-        return new ArrayList<Doacao>();
+        return  doacaos;
     }
 
-    public List<Doacao> buscarPorProduto(String login){
-        String jpql = "SELECT u from Produto u where u.login = :login";
-        //return em.createQuery(jpql, Produto.class)
-        //       .setParameter("login", login)
-        //     .getResultList();
-
-        return new ArrayList<Doacao>();
-    }
 
 
 }

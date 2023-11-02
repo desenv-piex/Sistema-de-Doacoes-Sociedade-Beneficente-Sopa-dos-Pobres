@@ -269,7 +269,7 @@ public class TelaProdutos extends javax.swing.JDialog {
     }//GEN-LAST:event_jBtnSairProdutoActionPerformed
 
     private void jbFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbFiltrarActionPerformed
-        ExcelExporter.exportToExcel(allProdutos);
+       // ExcelExporter.exportToExcel(allProdutos);
     }//GEN-LAST:event_jbFiltrarActionPerformed
 
     private void jbNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNovoProdutoActionPerformed

@@ -1,7 +1,7 @@
 package org.sdp.model;
 
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "produto") // Nome da tabela no banco de dados
@@ -13,22 +13,23 @@ public class Produto {
     @Column(name = "nome_produto")
     private String nomeProduto;
 
-    @Column(name = "qnt_produto")
-    private int qntProduto;
+    //@Column(name = "qnt_produto")
+    //private int qntProduto;
 
     @Column(name = "valor_produto")
     private double valorProduto;
 
-    @ManyToOne // Mapeia o relacionamento entre Produto e Doacao
-    private Doacao doacao;
+    //@ManyToMany(mappedBy = "produtos")
+    @OneToMany(mappedBy = "produto")
+    private List<DoacaoProduto> doacoes;
 
     public Produto() {
     }
 
-    public Produto(Long id, String nomeProduto, int qntProduto, double valorProduto) {
+    public Produto(Long id, String nomeProduto, double valorProduto) {
         this.id = id;
         this.nomeProduto = nomeProduto;
-        this.qntProduto = qntProduto;
+        //this.qntProduto = qntProduto;
         this.valorProduto = valorProduto;
     }
 
@@ -44,14 +45,6 @@ public class Produto {
         this.nomeProduto = nomeProduto;
     }
 
-    public int getQntProduto() {
-        return qntProduto;
-    }
-
-    public void setQntProduto(int qntProduto) {
-        this.qntProduto = qntProduto;
-    }
-
     public double getValorProduto() {
         return valorProduto;
     }
@@ -60,11 +53,4 @@ public class Produto {
         valorProduto = valorProduto;
     }
 
-    public Doacao getDoacao() {
-        return doacao;
-    }
-
-    public void setDoacao(Doacao doacao) {
-        this.doacao = doacao;
-    }
 }

@@ -157,7 +157,7 @@ public class CadastroProduto extends javax.swing.JDialog {
         }
         
         double valor = Double.parseDouble(jFormattedTextFieldValorProduto.getText().replace(',','.'));
-        Produto p = new Produto(null, jtfNomeProduto.getText(),0, valor);
+        Produto p = new Produto(null, jtfNomeProduto.getText(), valor);
         
         try {
             new ProdutoDao().cadastrar(p);

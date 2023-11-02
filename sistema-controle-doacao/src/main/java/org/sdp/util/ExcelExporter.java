@@ -41,7 +41,7 @@ public class ExcelExporter {
 
             // Concatena os nomes dos produtos
             StringBuilder produtosStr = new StringBuilder();
-            for (Produto produto : doacao.getProdutos()) {
+           /* for (Produto produto : doacao.getProdutos()) {
                 produtosStr.append(produto.getNomeProduto()).append(", ");
             }
             if (produtosStr.length() > 2) {
@@ -49,7 +49,7 @@ public class ExcelExporter {
             }
             Cell produtosCell = row.createCell(3);
             produtosCell.setCellValue(produtosStr.toString());
-
+            */
             Cell valorTotalCell = row.createCell(4);
             valorTotalCell.setCellValue(doacao.valorTotalDoado());
         }

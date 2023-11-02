@@ -6,6 +6,7 @@
     <persistence-unit name="MySqlDB">
         <class>org.sdp.model.Produto</class>
         <class>org.sdp.model.Doacao</class>
+        <class>org.sdp.model.DoacaoProduto</class>
         <class>org.sdp.model.Usuario</class>
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="update" />

@@ -4,6 +4,26 @@
  */
 package org.sdp.view.doacao;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.persistence.PersistenceException;
+import javax.swing.JOptionPane;
+
+import org.sdp.database.dao.doacao.DoacaoDao;
+import org.sdp.database.dao.doacao.DoacaoProdutoDao;
+import org.sdp.database.dao.produto.ProdutoDao;
+import org.sdp.model.Doacao;
+import org.sdp.model.DoacaoProduto;
+import org.sdp.model.Produto;
+import org.sdp.model.e.ETipoDoacao;
+
 /**
  *
  * @author anacl
@@ -17,7 +37,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/img/icon_sopa.png")).getImage());
-        
+
         jBtnSalvarValor.setVisible(false);
         CampoValor.setVisible(false);
         labelvalor.setVisible(false);
@@ -33,7 +53,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        cbTipoDoação = new javax.swing.JComboBox<>();
+        cbTipoDoacao = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTProdutosSelecionados = new javax.swing.JTable();
@@ -44,20 +64,26 @@ public class CadastroDoacao extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTProdutosCadastrados = new javax.swing.JTable();
         jlProdutos2 = new javax.swing.JLabel();
-        CampoValor = new javax.swing.JTextField();
         labelvalor = new javax.swing.JLabel();
         jBtnSalvarValor = new javax.swing.JButton();
         jBtnSalvarPRoduto = new javax.swing.JButton();
         btnVoltar = new javax.swing.JButton();
+        jBtnRemoverSelecionados = new javax.swing.JButton();
+        CampoValor = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(254, 240, 218));
 
-        cbTipoDoação.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Doação de Produto", "Doação de Valores" }));
-        cbTipoDoação.addActionListener(new java.awt.event.ActionListener() {
+        cbTipoDoacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Doação de Produto", "Doação de Valores" }));
+        cbTipoDoacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbTipoDoaçãoActionPerformed(evt);
+                cbTipoDoacaoActionPerformed(evt);
             }
         });
 
@@ -67,18 +93,22 @@ public class CadastroDoacao extends javax.swing.JDialog {
         jTProdutosSelecionados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTProdutosSelecionados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Produtos", "Qtde Doada [PREENCHER]", "Valor Unitário"
+                "Produtos", "Qtde Doada [PREENCHER]"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, false
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -112,17 +142,17 @@ public class CadastroDoacao extends javax.swing.JDialog {
         jTProdutosCadastrados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTProdutosCadastrados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Produtos Cadastrados"
+                "Produtos Cadastrados", "Valor Unitário"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -133,12 +163,6 @@ public class CadastroDoacao extends javax.swing.JDialog {
 
         jlProdutos2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jlProdutos2.setText("Produtos doados:");
-
-        CampoValor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CampoValorActionPerformed(evt);
-            }
-        });
 
         labelvalor.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         labelvalor.setText("Valor Doado:");
@@ -173,45 +197,60 @@ public class CadastroDoacao extends javax.swing.JDialog {
             }
         });
 
+        jBtnRemoverSelecionados.setBackground(new java.awt.Color(255, 153, 153));
+        jBtnRemoverSelecionados.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jBtnRemoverSelecionados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancel.png"))); // NOI18N
+        jBtnRemoverSelecionados.setText("Remover selecionados");
+        jBtnRemoverSelecionados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnRemoverSelecionadosActionPerformed(evt);
+            }
+        });
+
+        CampoValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jBtnSalvarPRoduto, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbTipoDoacao, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(labelvalor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(CampoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jBtnSalvarValor, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(6, 6, 6))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBtnSalvarPRoduto, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlPesquisarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jlPesquisarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLProdutos1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlProdutos2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jBPesquisa1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jBtnSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jlProdutos2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLProdutos1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbTipoDoação, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(labelvalor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(CampoValor)
-                                .addGap(38, 38, 38)
-                                .addComponent(jBtnSalvarValor, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(12, 12, 12))
+                            .addComponent(jBtnSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jBtnRemoverSelecionados)))))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,7 +261,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
                     .addComponent(labelvalor))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbTipoDoação, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbTipoDoacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBtnSalvarValor)
                     .addComponent(CampoValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -238,12 +277,14 @@ public class CadastroDoacao extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jBtnSelecionar)))
                 .addGap(34, 34, 34)
-                .addComponent(jlProdutos2)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jBtnRemoverSelecionados, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlProdutos2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnVoltar, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                    .addComponent(btnVoltar, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                     .addComponent(jBtnSalvarPRoduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -264,24 +305,84 @@ public class CadastroDoacao extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSelecionarActionPerformed
-        // TODO add your handling code here:
+        int[] rowsSelected = jTProdutosCadastrados.getSelectedRows();
+
+        if (allProdutosSelected == null) {
+            allProdutosSelected = new ArrayList<>();
+        }
+
+        for (int i = 0; i < rowsSelected.length; i++) {
+            int selectedIndex = rowsSelected[i];
+            if (selectedIndex >= 0 && selectedIndex < allProdutos.size()) {
+                Produto selectedProduto = allProdutos.get(selectedIndex);
+
+                if (!allProdutosSelected.contains(selectedProduto)) {
+                    allProdutosSelected.add(selectedProduto);
+                }
+            }
+        }
+
+        preencheTableSelecionados(allProdutosSelected);
     }//GEN-LAST:event_jBtnSelecionarActionPerformed
 
     private void jBtnSalvarValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarValorActionPerformed
-        // TODO add your handling code here:
+        if (cbTipoDoacao.getSelectedIndex() == -1 || CampoValor.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos antes de salvar! ");
+            return;
+        }
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+        Date date = Date.from(instant);
+
+        double valor = Double.parseDouble(CampoValor.getText().replace(',','.'));
+        Doacao d = new Doacao(null, ETipoDoacao.Dinheiro, null, date, valor);
+
+        try {
+            new DoacaoDao().cadastrar(d);
+            JOptionPane.showMessageDialog(null, "Doacao cadastrada com sucesso! ");
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel cadastrar a doacao no banco de dados. " + ex.getMessage());
+        }
+
     }//GEN-LAST:event_jBtnSalvarValorActionPerformed
 
-    private void CampoValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoValorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CampoValorActionPerformed
-
     private void jBtnSalvarPRodutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarPRodutoActionPerformed
-        // TODO add your handling code here:
+        if (cbTipoDoacao.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos antes de salvar! ");
+            return;
+        }
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+        Date date = Date.from(instant);
+
+        try {
+
+            Doacao d = new Doacao(null, ETipoDoacao.Produtos, null, date, 0);
+            d = new DoacaoDao().cadastrarComRetorno(d);
+
+            List<DoacaoProduto> dps = new ArrayList<>();
+
+            int i = 0;
+            for (Produto prod : allProdutosSelected) {
+                DoacaoProduto dp = new DoacaoProduto(null, d, prod, Integer.parseInt((String) jTProdutosSelecionados.getValueAt(i,1)));
+                dps.add(dp);
+                i++;
+            }
+
+            new DoacaoProdutoDao().cadastrarList(dps);
+
+            JOptionPane.showMessageDialog(null, "Doacao cadastrada com sucesso! ");
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel cadastrar a doacao no banco de dados. " + ex.getMessage());
+        }
+
     }//GEN-LAST:event_jBtnSalvarPRodutoActionPerformed
 
-    private void cbTipoDoaçãoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoDoaçãoActionPerformed
+    private void cbTipoDoacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoDoacaoActionPerformed
         // TODO add your handling code here:
-        if(cbTipoDoação.getSelectedItem().toString().equals("Doação de Valores")){
+        if(cbTipoDoacao.getSelectedItem().toString().equals("Doação de Valores")){
             jBtnSalvarValor.setVisible(true);
             CampoValor.setVisible(true);
             labelvalor.setVisible(true);
@@ -306,15 +407,91 @@ public class CadastroDoacao extends javax.swing.JDialog {
             jTProdutosCadastrados.setVisible(true);
             jTProdutosSelecionados.setVisible(true);
         }
-    }//GEN-LAST:event_cbTipoDoaçãoActionPerformed
+    }//GEN-LAST:event_cbTipoDoacaoActionPerformed
 
     private void jBPesquisa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPesquisa1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            allProdutos = new ProdutoDao().buscarPorNomeProduto("%"+jlPesquisarProduto.getText()+"%");
+
+            preencheTable(allProdutos);
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel acessar o banco de dados para consultar os produtos. " + ex.getMessage());
+        }
     }//GEN-LAST:event_jBPesquisa1ActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        try {
+            allProdutos = new ProdutoDao().buscarTodos();
+
+            preencheTable(allProdutos);
+
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel acessar o banco de dados para consultar os produtos. " + ex.getMessage());
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jBtnRemoverSelecionadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnRemoverSelecionadosActionPerformed
+
+        int[] rowsSelected = jTProdutosSelecionados.getSelectedRows();
+
+        if (allProdutosSelected == null) {
+            allProdutosSelected = new ArrayList<>();
+        }
+
+        for (int i = rowsSelected.length - 1; i >= 0; i--) {
+            int rowIndex = rowsSelected[i];
+            if (rowIndex >= 0 && rowIndex < allProdutosSelected.size()) {
+                allProdutosSelected.remove(rowIndex);
+            }
+        }
+
+        preencheTableSelecionados(allProdutosSelected);
+    }//GEN-LAST:event_jBtnRemoverSelecionadosActionPerformed
+
+
+
+    private List<Produto> allProdutos = new ArrayList<>();
+
+    private List<Produto> allProdutosSelected = new ArrayList<>();;
+    public List<Produto> getAllProdutos() {
+        return allProdutos;
+    }
+
+    public List<Produto> getAllProdutosSelected() {
+        return allProdutosSelected;
+    }
+
+    private void preencheTable(List<Produto> allProdutos){
+        DefaultTableModel dtm = (DefaultTableModel) jTProdutosCadastrados.getModel();
+
+        while(dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
+
+        for(Produto p : allProdutos) {
+            String[] linha = { p.getNomeProduto(), p.getValorProduto()+""};
+            dtm.addRow(linha);
+        }
+    }
+
+    private void preencheTableSelecionados(List<Produto> allProdutosSelecionados){
+        DefaultTableModel dtm = (DefaultTableModel) jTProdutosSelecionados.getModel();
+
+        while(dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
+
+        for(Produto p : allProdutosSelecionados) {
+            String[] linha = { p.getNomeProduto(), 1+"",p.getValorProduto()+""};
+            dtm.addRow(linha);
+        }
+
+    }
+    
 
     /**
      * @param args the command line arguments
@@ -323,7 +500,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -366,10 +543,11 @@ public class CadastroDoacao extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField CampoValor;
+    private javax.swing.JFormattedTextField CampoValor;
     private javax.swing.JButton btnVoltar;
-    private javax.swing.JComboBox<String> cbTipoDoação;
+    private javax.swing.JComboBox<String> cbTipoDoacao;
     private javax.swing.JButton jBPesquisa1;
+    private javax.swing.JButton jBtnRemoverSelecionados;
     private javax.swing.JButton jBtnSalvarPRoduto;
     private javax.swing.JButton jBtnSalvarValor;
     private javax.swing.JButton jBtnSelecionar;

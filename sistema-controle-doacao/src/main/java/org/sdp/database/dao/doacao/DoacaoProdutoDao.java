@@ -11,20 +11,19 @@ import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DoacaoDao implements IGenericDAO<Doacao, Long> {
+public class DoacaoProdutoDao implements IGenericDAO<DoacaoProduto, Long> {
 
     private final EntityManager em;
 
-
-    public DoacaoDao(){
+    public DoacaoProdutoDao(){
         this.em = JPAUtil.getEntityManager();
     }
 
     @Override
-    public void cadastrar(Doacao Doacao) throws PersistenceException {
+    public void cadastrar(DoacaoProduto doacaoProduto) throws PersistenceException {
         try{
             this.em.getTransaction().begin();
-            this.em.persist(Doacao);
+            this.em.persist(doacaoProduto);
             this.em.getTransaction().commit(); // Confirma a transação
         } catch (PersistenceException e) {
             this.em.getTransaction().rollback();
@@ -34,35 +33,14 @@ public class DoacaoDao implements IGenericDAO<Doacao, Long> {
         }
     }
 
-    public Doacao cadastrarComRetorno(Doacao doacao) throws PersistenceException {
 
-        try{
-            this.em.getTransaction().begin();
-            this.em.persist(doacao);
-            this.em.getTransaction().commit(); // Confirma a transação
-            em.refresh(doacao);
-        } catch (PersistenceException e) {
-            this.em.getTransaction().rollback();
-            throw e;
-        } finally {
-            this.em.close();
-        }
-
-        return doacao;
-    }
-
-    @Override
-    public void atualizar(Doacao Doacao) throws PersistenceException {
-        //this.em.merge(Doacao);
-    }
-
-    @Override
-    public void remover(Doacao Doacao) throws PersistenceException {
+    public void cadastrarList(List<DoacaoProduto> dps) throws PersistenceException {
         try{
             this.em.getTransaction().begin();
 
-            Doacao = em.merge(Doacao);
-            this.em.remove(Doacao);
+            for (DoacaoProduto doacaoProduto : dps) {
+                this.em.persist(doacaoProduto);
+            }
 
             this.em.getTransaction().commit(); // Confirma a transação
         } catch (PersistenceException e) {
@@ -74,12 +52,24 @@ public class DoacaoDao implements IGenericDAO<Doacao, Long> {
     }
 
     @Override
-    public Doacao buscar(Long id) throws PersistenceException {
-        Doacao u = new Doacao();
+    public void atualizar(DoacaoProduto obj) throws PersistenceException {
+
+    }
+
+    @Override
+    public void remover(DoacaoProduto obj) throws PersistenceException {
+
+    }
+
+
+
+    @Override
+    public DoacaoProduto buscar(Long id) throws PersistenceException {
+        DoacaoProduto u = new DoacaoProduto();
         try{
             this.em.getTransaction().begin();
 
-            u = em.find(Doacao.class, id);
+            u = em.find(DoacaoProduto.class, id);
 
             this.em.getTransaction().commit(); // Confirma a transação
         } catch (PersistenceException e) {
@@ -93,11 +83,11 @@ public class DoacaoDao implements IGenericDAO<Doacao, Long> {
     }
 
     @Override
-    public List<Doacao> buscarTodos() throws PersistenceException {
-        List<Doacao> doacaos = new ArrayList<>();
+    public List<DoacaoProduto> buscarTodos() throws PersistenceException {
+        List<DoacaoProduto> doacaos = new ArrayList<>();
         try {
             String jpql = "SELECT d FROM Doacao d";
-            doacaos = this.em.createQuery(jpql,Doacao.class).getResultList();
+            doacaos = this.em.createQuery(jpql,DoacaoProduto.class).getResultList();
         }catch (PersistenceException e){
             throw e;
         }finally {
@@ -110,3 +100,4 @@ public class DoacaoDao implements IGenericDAO<Doacao, Long> {
 
 
 }
+

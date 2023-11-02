@@ -163,7 +163,7 @@ public class EditarProduto extends javax.swing.JDialog {
         }
         
         double valor = Double.parseDouble(jFormattedTextFieldValorProduto.getText().replace(',','.'));
-        Produto p = new Produto(produto.getId(), jtfNomeProduto.getText(),produto.getQntProduto(), valor);
+        Produto p = new Produto(produto.getId(), jtfNomeProduto.getText(), valor);
         
         try {
             new ProdutoDao().atualizar(p);

@@ -19,22 +19,31 @@ public class Doacao {
     @Enumerated(EnumType.STRING) // Mapeia o enum como uma string (ou podemos usar EnumType.ORDINAL para mapear como um número)
     private ETipoDoacao tipoDoacao;
 
-    @OneToMany(mappedBy = "doacao") // Mapeia o relacionamento entre Doacao e Produto
-    private List<Produto> produtos;
+    //@ManyToMany
+    //@JoinTable(name = "doacao_produto",
+    //        joinColumns = @JoinColumn(name = "doacao_id"),
+    //        inverseJoinColumns = @JoinColumn(name = "produto_id"))
+
+    @OneToMany(mappedBy = "doacao")
+    private List<DoacaoProduto> produtos;
 
     @Temporal(TemporalType.TIMESTAMP) // Mapeia o atributo de data como LocalDateTime
     @Column(name = "data_doacao") // Nome da coluna no banco de dados
     private Date dataDoacao;
 
+    @Column(name = "valor_doacao")
+    private double valorDoacao;
+
     public Doacao() {
         this.produtos = new ArrayList<>();
     }
 
-    public Doacao(Long id, ETipoDoacao tipoDoacao, List<Produto> produtos, Date dataDoacao) {
+    public Doacao(Long id, ETipoDoacao tipoDoacao, List<DoacaoProduto> produtos, Date dataDoacao, double valorDoacao) {
         this.id = id;
         this.tipoDoacao = tipoDoacao;
         this.produtos = produtos;
         this.dataDoacao = dataDoacao;
+        this.valorDoacao = valorDoacao;
     }
 
     public Long getId() {
@@ -53,13 +62,6 @@ public class Doacao {
         this.tipoDoacao = tipoDoacao;
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
-    }
-
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
-    }
 
     public Date getDataDoacao() {
         return dataDoacao;
@@ -72,15 +74,10 @@ public class Doacao {
     public double valorTotalDoado(){
         double valTot = 0;
 
-        if (tipoDoacao.equals(ETipoDoacao.Dinheiro)){
-            for (Produto produto:produtos) {
-                valTot = produto.getValorProduto();
-            }
-
-        }else{
-            for (Produto produto:produtos) {
-                valTot = produto.getValorProduto()*produto.getQntProduto();
-            }
+        if (tipoDoacao.equals(ETipoDoacao.Produtos)){
+           // for (Produto produto : produtos) {
+             //   valTot = produto.getValorProduto()*produto.getQntProduto();
+           // }
         }
         return valTot;
     }

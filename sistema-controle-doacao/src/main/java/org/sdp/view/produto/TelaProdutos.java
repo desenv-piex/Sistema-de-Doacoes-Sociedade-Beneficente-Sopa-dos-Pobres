@@ -126,6 +126,11 @@ public class TelaProdutos extends javax.swing.JDialog {
         jbExcluirProduto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jbExcluirProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete.png"))); // NOI18N
         jbExcluirProduto.setText("Excluir");
+        jbExcluirProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExcluirProdutoActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(254, 240, 218));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros"));
@@ -287,6 +292,28 @@ public class TelaProdutos extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Não foi possivel acessar o banco de dados para consultar os produtos. " + ex.getMessage());
         }
     }//GEN-LAST:event_formWindowOpened
+
+    private void jbExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExcluirProdutoActionPerformed
+        int row = jtProdutos.getSelectedRow();
+        
+        if(row < 0){
+            JOptionPane.showMessageDialog(null, "Selecione um produto na lista para apagar!");
+        } else {
+            
+            if(JOptionPane.showConfirmDialog(null, "Deseja apagar o produto " + allProdutos.get(row).getNomeProduto()+ "?",
+                    "Apagar produto?",
+                    JOptionPane.YES_NO_OPTION) 
+                    == JOptionPane.YES_OPTION ){
+                try {
+                    new ProdutoDao().remover(allProdutos.get(row));
+                    JOptionPane.showMessageDialog(null, "Produto apagado com sucesso.");
+                    formWindowOpened(null);
+                } catch (PersistenceException ex) {
+                    JOptionPane.showMessageDialog(null, "Não foi possivel apagar o produto no banco de dados." + ex.getMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_jbExcluirProdutoActionPerformed
 
     private List<Produto> allProdutos;
 

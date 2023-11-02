@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.sdp.database.dao.produto.ProdutoDao;
 import org.sdp.model.Produto;
+import org.sdp.util.ExcelExporter;
 
 /**
  *
@@ -268,7 +269,7 @@ public class TelaProdutos extends javax.swing.JDialog {
     }//GEN-LAST:event_jBtnSairProdutoActionPerformed
 
     private void jbFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbFiltrarActionPerformed
-        // TODO add your handling code here:
+        ExcelExporter.exportToExcel(allProdutos);
     }//GEN-LAST:event_jbFiltrarActionPerformed
 
     private void jbNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNovoProdutoActionPerformed

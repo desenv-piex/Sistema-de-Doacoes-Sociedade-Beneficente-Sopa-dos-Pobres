@@ -4,6 +4,8 @@
  */
 package org.sdp.view.produto;
 
+import org.sdp.util.ExcelExporter;
+
 /**
  *
  * @author Nikão
@@ -146,7 +148,7 @@ public class EditarProduto extends javax.swing.JDialog {
     }//GEN-LAST:event_jBtnSairProdutoActionPerformed
 
     private void jBtnSalvarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarProdutoActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jBtnSalvarProdutoActionPerformed
 
     /**

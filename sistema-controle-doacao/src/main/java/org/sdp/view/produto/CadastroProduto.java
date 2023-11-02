@@ -4,6 +4,11 @@
  */
 package org.sdp.view.produto;
 
+import javax.persistence.PersistenceException;
+import javax.swing.JOptionPane;
+import org.sdp.database.dao.produto.ProdutoDao;
+import org.sdp.model.Produto;
+
 /**
  *
  * @author Nikão
@@ -65,6 +70,11 @@ public class CadastroProduto extends javax.swing.JDialog {
         jBtnSalvarProduto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jBtnSalvarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/new.png"))); // NOI18N
         jBtnSalvarProduto.setText("Salvar");
+        jBtnSalvarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnSalvarProdutoActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 51, 0));
@@ -139,6 +149,23 @@ public class CadastroProduto extends javax.swing.JDialog {
     private void jBtnSairProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSairProdutoActionPerformed
         this.dispose();
     }//GEN-LAST:event_jBtnSairProdutoActionPerformed
+
+    private void jBtnSalvarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarProdutoActionPerformed
+        if (jtfNomeProduto.getText().equals("") || jFormattedTextFieldValorProduto.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos antes de salvar! ");
+            return;
+        }
+        
+        double valor = Double.parseDouble(jFormattedTextFieldValorProduto.getText().replace(',','.'));
+        Produto p = new Produto(null, jtfNomeProduto.getText(),0, valor);
+        
+        try {
+            new ProdutoDao().cadastrar(p);
+            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso! ");
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel cadastrar o produto no banco de dados. " + ex.getMessage());
+        }
+    }//GEN-LAST:event_jBtnSalvarProdutoActionPerformed
 
     /**
      * @param args the command line arguments

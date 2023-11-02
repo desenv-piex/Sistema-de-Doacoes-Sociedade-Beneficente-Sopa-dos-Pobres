@@ -4,6 +4,14 @@
  */
 package org.sdp.view.produto;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.PersistenceException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.sdp.database.dao.produto.ProdutoDao;
+import org.sdp.model.Produto;
+
 /**
  *
  * @author Nikão
@@ -47,6 +55,11 @@ public class TelaProdutos extends javax.swing.JDialog {
         jbFiltrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(254, 240, 218));
 
@@ -65,15 +78,22 @@ public class TelaProdutos extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Nome Produto", "Preço", "Data Cadastro"
+                "Nome Produto", "Preço"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(jtProdutos);
@@ -249,6 +269,8 @@ public class TelaProdutos extends javax.swing.JDialog {
     private void jbNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNovoProdutoActionPerformed
         CadastroProduto cp = new CadastroProduto(null, true);
         cp.setVisible(true);
+        
+        formWindowOpened(null);
     }//GEN-LAST:event_jbNovoProdutoActionPerformed
 
     private void jbEditarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarProdutoActionPerformed
@@ -256,6 +278,35 @@ public class TelaProdutos extends javax.swing.JDialog {
         ep.setVisible(true);
     }//GEN-LAST:event_jbEditarProdutoActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        try {
+            allProdutos = new ProdutoDao().buscarTodos();
+            
+            preencheTable(allProdutos);
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel acessar o banco de dados para consultar os produtos. " + ex.getMessage());
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private List<Produto> allProdutos;
+
+    public List<Produto> getAllProdutos() {
+        return allProdutos;
+    }
+    
+    
+    private void preencheTable(List<Produto> allProdutos){
+        DefaultTableModel dtm = (DefaultTableModel) jtProdutos.getModel();
+        
+        while(dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
+        
+        for(Produto p : allProdutos) {       
+            String[] linha = { p.getNomeProduto(), p.getValorProduto()+""};    
+            dtm.addRow(linha);
+        }
+    }
     /**
      * @param args the command line arguments
      */

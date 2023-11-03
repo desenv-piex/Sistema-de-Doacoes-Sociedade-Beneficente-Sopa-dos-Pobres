@@ -4,7 +4,9 @@
  */
 package org.sdp.view.home;
 
+import org.sdp.model.Usuario;
 import org.sdp.view.doacao.CadastroDoacao;
+import org.sdp.view.login.TelaLogin;
 import org.sdp.view.produto.TelaProdutos;
 import org.sdp.view.relatorio.TelaRelatorioDoac;
 import org.sdp.view.relatorio.TelaRelatorioProd;
@@ -44,6 +46,11 @@ public class TelaInicial extends javax.swing.JDialog {
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(254, 240, 218));
 
@@ -191,6 +198,20 @@ public class TelaInicial extends javax.swing.JDialog {
         tp.setVisible(true);
     }//GEN-LAST:event_JbtRProdutoActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+       //aq quando abre
+       TelaLogin login = new TelaLogin();
+       login.setVisible(true);
+       
+       userLogado = login.getUser();
+       
+       if(userLogado.getLogin() != "admin"){
+           jbtRDoacao.setVisible(false);
+           JbtRProduto.setVisible(false);
+       }
+
+    }//GEN-LAST:event_formWindowOpened
+
     /**
      * @param args the command line arguments
      */
@@ -245,5 +266,15 @@ public class TelaInicial extends javax.swing.JDialog {
     private javax.swing.JButton jbtRDoacao;
     // End of variables declaration//GEN-END:variables
 
+    
+    private Usuario userLogado;
+
+    public Usuario getUserLogado() {
+        return userLogado;
+    }
+
+    public void setUserLogado(Usuario userLogado) {
+        this.userLogado = userLogado;
+    }
 
 }

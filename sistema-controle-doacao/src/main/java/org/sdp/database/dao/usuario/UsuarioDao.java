@@ -83,15 +83,15 @@ public class UsuarioDao implements IGenericDAO<Usuario, Long> {
 
     public Usuario buscarPorLogineSenha(String login, String senha) {
         String jpql = "SELECT u from Usuario u where u.login = :login and u.senha = :senha";
-        List<Usuario> resultados = em.createQuery(jpql, Usuario.class)
+        List<Usuario> user = em.createQuery(jpql, Usuario.class)
                 .setParameter("login", login)
                 .setParameter("senha", senha)
                 .getResultList();
 
-        if (!resultados.isEmpty()) {
-            return resultados.get(0);
-        } else {
+        if (user.isEmpty()) {
             return null;
+        } else {
+            return user.get(0);
         }
     }
 

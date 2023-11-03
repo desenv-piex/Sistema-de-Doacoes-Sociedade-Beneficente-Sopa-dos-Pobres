@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.sdp.database.dao.usuario.UsuarioDao;
 import org.sdp.model.Usuario;
+import org.sdp.view.home.TelaInicial;
 
 /**
  *
@@ -158,15 +159,21 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void jLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLogarActionPerformed
     
-    Usuario u = new UsuarioDao().buscarPorLogineSenha(jlogin.getText(), jsenha.getText());
-    
-    if (u != null) {        
-           setVisible(false);
-           user = u;
-    } else {
-    JOptionPane.showMessageDialog(null, "Usuário não encontrado");
-    }   
-    
+        Usuario u = new UsuarioDao().buscarPorLogineSenha(jlogin.getText(), jsenha.getText());
+
+        if (u != null) {        
+               setVisible(false);
+               user = u;
+              
+               TelaInicial ti = new TelaInicial(this,true); 
+               ti.setUserLogado(user);
+               ti.setVisible(true);
+               this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuário não encontrado");
+            return;
+        }   
+        
     }//GEN-LAST:event_jLogarActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

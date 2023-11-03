@@ -4,6 +4,17 @@
  */
 package org.sdp.view.relatorio;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.PersistenceException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.sdp.database.dao.doacao.DoacaoDao;
+import org.sdp.model.Doacao;
+import org.sdp.model.DoacaoProduto;
+import org.sdp.model.Produto;
+import org.sdp.util.ExcelExporter;
+
 /**
  *
  * @author Elton Oliveira
@@ -44,26 +55,30 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(null);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(254, 240, 218));
 
-        Produtos.setForeground(java.awt.Color.white);
         Produtos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Id", "Nome", "Quantidade", "Data Inserção"
+                "Id", "Data doação", "Valor", "Tipo de doação", "Produtos"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -105,7 +120,7 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(102, 51, 0));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Relatórios");
+        jLabel4.setText("Doações");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -167,6 +182,11 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/baixarRelatorio.png"))); // NOI18N
         jButton2.setText("Download");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -233,6 +253,49 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnVoltar2ActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        try{
+            allDoacoes = new DoacaoDao().buscarTodos();
+            preencheTable(allDoacoes);
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel acessar o banco de dados para consultar os produtos. " + ex.getMessage());
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ExcelExporter.exportToExcel(allDoacoes);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    
+    private List<Doacao> allDoacoes = new ArrayList<Doacao>();
+
+    public List<Doacao> getAllDoacoes() {
+        return allDoacoes;
+    }
+    
+    private void preencheTable(List<Doacao> allDoacoes){
+        DefaultTableModel dtm = (DefaultTableModel) Produtos.getModel();
+
+        while(dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
+        
+        for(Doacao d : allDoacoes) {
+            
+            // Concatena os nomes dos produtos
+            StringBuilder produtosStr = new StringBuilder();
+            for (DoacaoProduto produto : d.getProdutos()) {
+                produtosStr.append(produto.getProduto().getNomeProduto()).append(", ");
+            }
+            if (produtosStr.length() > 2) {
+                produtosStr.setLength(produtosStr.length() - 2); // Remove a última vírgula e espaço
+            }
+
+            String[] linha = { d.getId()+"", d.getDataDoacao()+"", d.getValorDoacao()+"", d.getTipoDoacao()+"", produtosStr+""};    
+            dtm.addRow(linha);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */

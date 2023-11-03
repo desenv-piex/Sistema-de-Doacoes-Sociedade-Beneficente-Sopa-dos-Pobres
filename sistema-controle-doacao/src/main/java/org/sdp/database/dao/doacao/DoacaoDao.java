@@ -7,6 +7,7 @@ import org.sdp.model.Produto;
 import org.sdp.util.JPAUtil;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,12 +93,21 @@ public class DoacaoDao implements IGenericDAO<Doacao, Long> {
         return u;
     }
 
+/*
+
     @Override
     public List<Doacao> buscarTodos() throws PersistenceException {
         List<Doacao> doacaos = new ArrayList<>();
         try {
             String jpql = "SELECT d FROM Doacao d";
             doacaos = this.em.createQuery(jpql,Doacao.class).getResultList();
+
+            // Carregar a coleção produtos para cada doação antes de fechar a sessão
+            for (Doacao doacao : doacaos) {
+                //doacao.getProdutos().size(); // Isso carrega a coleção
+                doacao.setProdutos(new DoacaoProdutoDao().buscarListPorIdDoacao(doacao.getId()));
+            }
+
         }catch (PersistenceException e){
             throw e;
         }finally {
@@ -106,7 +116,32 @@ public class DoacaoDao implements IGenericDAO<Doacao, Long> {
 
         return  doacaos;
     }
+*/
+    @Override
+    public List<Doacao> buscarTodos() {
+        List<Doacao> doacaos = new ArrayList<>();
+        EntityTransaction tx = em.getTransaction();
 
+        try {
+            tx.begin();
+            String jpql = "SELECT DISTINCT d FROM Doacao d LEFT JOIN FETCH d.produtos";
+            doacaos = em.createQuery(jpql, Doacao.class).getResultList();
 
+            for (Doacao d : doacaos) {
+                d.setValorDoacao();
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            e.printStackTrace(); // Trate a exceção apropriadamente, não apenas imprima.
+        } finally {
+            em.close();
+        }
+
+        return doacaos;
+    }
 
 }

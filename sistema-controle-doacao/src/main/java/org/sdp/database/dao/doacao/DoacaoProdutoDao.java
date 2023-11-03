@@ -81,6 +81,43 @@ public class DoacaoProdutoDao implements IGenericDAO<DoacaoProduto, Long> {
 
         return u;
     }
+    public DoacaoProduto buscarPorIdDoacao(Long id) throws PersistenceException {
+        DoacaoProduto u = new DoacaoProduto();
+        try{
+            this.em.getTransaction().begin();
+
+            String jpql = "SELECT d FROM DoacaoProduto d WHERE doacao_id = :id";
+            u = this.em.createQuery(jpql,DoacaoProduto.class).setParameter("id",id).getSingleResult();
+
+            this.em.getTransaction().commit(); // Confirma a transação
+        } catch (PersistenceException e) {
+            this.em.getTransaction().rollback();
+            throw e;
+        } finally {
+            this.em.close();
+        }
+
+        return u;
+    }
+
+    public List<DoacaoProduto> buscarListPorIdDoacao(Long id) throws PersistenceException {
+        List<DoacaoProduto> u = new ArrayList<DoacaoProduto>();
+        try{
+            //this.em.getTransaction().begin();
+
+            String jpql = "SELECT d FROM Doacao d WHERE doacao_id = :id";
+            u = this.em.createQuery(jpql,DoacaoProduto.class).setParameter("id",id).getResultList();
+
+            //this.em.getTransaction().commit(); // Confirma a transação
+        } catch (PersistenceException e) {
+            this.em.getTransaction().rollback();
+            throw e;
+        } finally {
+            this.em.close();
+        }
+
+        return u;
+    }
 
     @Override
     public List<DoacaoProduto> buscarTodos() throws PersistenceException {

@@ -337,6 +337,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
 
         double valor = Double.parseDouble(CampoValor.getText().replace(',','.'));
         Doacao d = new Doacao(null, ETipoDoacao.Dinheiro, null, date, valor);
+        d.setValorDoacao();
 
         try {
             new DoacaoDao().cadastrar(d);
@@ -358,11 +359,11 @@ public class CadastroDoacao extends javax.swing.JDialog {
         Date date = Date.from(instant);
 
         try {
+            List<DoacaoProduto> dps = new ArrayList<>();
 
-            Doacao d = new Doacao(null, ETipoDoacao.Produtos, null, date, 0);
+            Doacao d = new Doacao(null, ETipoDoacao.Produtos, dps, date, 0);
             d = new DoacaoDao().cadastrarComRetorno(d);
 
-            List<DoacaoProduto> dps = new ArrayList<>();
 
             int i = 0;
             for (Produto prod : allProdutosSelected) {

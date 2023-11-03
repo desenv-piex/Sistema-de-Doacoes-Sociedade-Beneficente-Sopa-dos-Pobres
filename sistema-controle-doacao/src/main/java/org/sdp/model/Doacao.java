@@ -46,6 +46,14 @@ public class Doacao {
         this.valorDoacao = valorDoacao;
     }
 
+    public double getValorDoacao() {
+        return valorDoacao;
+    }
+
+    public void setValorDoacao() {
+        this.valorDoacao = valorTotalDoado();
+    }
+
     public Long getId() {
         return id;
     }
@@ -71,13 +79,23 @@ public class Doacao {
         this.dataDoacao = dataDoacao;
     }
 
+    public List<DoacaoProduto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<DoacaoProduto> produtos) {
+        this.produtos = produtos;
+    }
+
     public double valorTotalDoado(){
         double valTot = 0;
 
         if (tipoDoacao.equals(ETipoDoacao.Produtos)){
-           // for (Produto produto : produtos) {
-             //   valTot = produto.getValorProduto()*produto.getQntProduto();
-           // }
+           for (DoacaoProduto produto : produtos) {
+                valTot += produto.getProduto().getValorProduto() * produto.getQuantidade();
+           }
+        } else {
+            valTot = this.valorDoacao;
         }
         return valTot;
     }

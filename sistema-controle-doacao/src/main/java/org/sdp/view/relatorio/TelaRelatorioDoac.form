@@ -11,6 +11,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowOpened"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -101,19 +104,22 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="Produtos">
               <Properties>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
-                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="4">
-                    <Column editable="false" title="Id" type="java.lang.Integer"/>
-                    <Column editable="true" title="Nome" type="java.lang.String"/>
-                    <Column editable="true" title="Quantidade" type="java.lang.Double"/>
-                    <Column editable="true" title="Data Inser&#xe7;&#xe3;o" type="java.lang.String"/>
+                  <Table columnCount="5" rowCount="4">
+                    <Column editable="false" title="Id" type="java.lang.String"/>
+                    <Column editable="false" title="Data doa&#xe7;&#xe3;o" type="java.lang.String"/>
+                    <Column editable="false" title="Valor" type="java.lang.String"/>
+                    <Column editable="false" title="Tipo de doa&#xe7;&#xe3;o" type="java.lang.String"/>
+                    <Column editable="false" title="Produtos" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -246,7 +252,7 @@
                   <Color blue="0" green="33" red="66" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Relat&#xf3;rios"/>
+                <Property name="text" type="java.lang.String" value="Doa&#xe7;&#xf5;es"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -301,6 +307,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Download"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

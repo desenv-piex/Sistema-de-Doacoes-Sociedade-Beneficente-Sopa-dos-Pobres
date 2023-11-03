@@ -3,6 +3,7 @@ package org.sdp.util;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.sdp.model.Doacao;
+import org.sdp.model.DoacaoProduto;
 import org.sdp.model.Produto;
 
 
@@ -41,15 +42,15 @@ public class ExcelExporter {
 
             // Concatena os nomes dos produtos
             StringBuilder produtosStr = new StringBuilder();
-           /* for (Produto produto : doacao.getProdutos()) {
-                produtosStr.append(produto.getNomeProduto()).append(", ");
+            for (DoacaoProduto produto : doacao.getProdutos()) {
+                produtosStr.append(produto.getProduto().getNomeProduto()).append(", ");
             }
             if (produtosStr.length() > 2) {
                 produtosStr.setLength(produtosStr.length() - 2); // Remove a última vírgula e espaço
             }
             Cell produtosCell = row.createCell(3);
             produtosCell.setCellValue(produtosStr.toString());
-            */
+
             Cell valorTotalCell = row.createCell(4);
             valorTotalCell.setCellValue(doacao.valorTotalDoado());
         }

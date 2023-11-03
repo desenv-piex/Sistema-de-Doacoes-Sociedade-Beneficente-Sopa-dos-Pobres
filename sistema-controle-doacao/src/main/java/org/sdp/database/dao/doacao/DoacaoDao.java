@@ -9,7 +9,9 @@ import org.sdp.util.JPAUtil;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
+import javax.persistence.TemporalType;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DoacaoDao implements IGenericDAO<Doacao, Long> {
@@ -93,30 +95,6 @@ public class DoacaoDao implements IGenericDAO<Doacao, Long> {
         return u;
     }
 
-/*
-
-    @Override
-    public List<Doacao> buscarTodos() throws PersistenceException {
-        List<Doacao> doacaos = new ArrayList<>();
-        try {
-            String jpql = "SELECT d FROM Doacao d";
-            doacaos = this.em.createQuery(jpql,Doacao.class).getResultList();
-
-            // Carregar a coleção produtos para cada doação antes de fechar a sessão
-            for (Doacao doacao : doacaos) {
-                //doacao.getProdutos().size(); // Isso carrega a coleção
-                doacao.setProdutos(new DoacaoProdutoDao().buscarListPorIdDoacao(doacao.getId()));
-            }
-
-        }catch (PersistenceException e){
-            throw e;
-        }finally {
-            this.em.close();
-        }
-
-        return  doacaos;
-    }
-*/
     @Override
     public List<Doacao> buscarTodos() {
         List<Doacao> doacaos = new ArrayList<>();
@@ -142,6 +120,27 @@ public class DoacaoDao implements IGenericDAO<Doacao, Long> {
         }
 
         return doacaos;
+    }
+
+    public List<Doacao> buscarTodosFiltroDatas(Date dataInicio, Date dataFim) throws PersistenceException {
+        List<Doacao> doacoes = new ArrayList<>();
+        try {
+            String jpql = "SELECT DISTINCT d FROM Doacao d " +
+                    "LEFT JOIN FETCH d.produtos " +
+                    "WHERE d.dataDoacao >= :dataInicio " +
+                    "AND d.dataDoacao < :dataFim";
+
+            doacoes = this.em.createQuery(jpql, Doacao.class)
+                    .setParameter("dataInicio", dataInicio, TemporalType.DATE)
+                    .setParameter("dataFim", dataFim, TemporalType.DATE)
+                    .getResultList();
+        } catch (PersistenceException e) {
+            throw e;
+        } finally {
+            this.em.close();
+        }
+
+        return doacoes;
     }
 
 }

@@ -4,7 +4,11 @@
  */
 package org.sdp.view.relatorio;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.PersistenceException;
 import javax.swing.JOptionPane;
@@ -44,8 +48,8 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        jffDataFim = new javax.swing.JFormattedTextField();
+        jffDataInicio = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -105,14 +109,14 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
 
         jLabel2.setText("Início:");
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jffDataFim.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        jffDataFim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextField1ActionPerformed(evt);
+                jffDataFimActionPerformed(evt);
             }
         });
 
-        jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        jffDataInicio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
 
         jLabel3.setText("Fim:");
 
@@ -131,11 +135,11 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jffDataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jffDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -146,9 +150,9 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
                 .addContainerGap(17, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jffDataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jffDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(jButton1))
                 .addContainerGap())
@@ -241,12 +245,44 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        if (jffDataInicio.getText().equals("") || jffDataFim.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Para filtrar, preencha os campos de Inicio e Fim!");
+            return;
+        }
+
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            Date dateI = inputFormat.parse(jffDataInicio.getText());
+            String formattedDateI = outputFormat.format(dateI);
+
+            Date dateF = inputFormat.parse(jffDataFim.getText());
+
+            // Adicione um dia à data dateF usando a classe Calendar
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dateF);
+            calendar.add(Calendar.DAY_OF_MONTH, 1); // Adiciona um dia
+            dateF = calendar.getTime();
+
+            String formattedDateF = outputFormat.format(dateF);
+
+            allDoacoes = new DoacaoDao().buscarTodosFiltroDatas(
+                    outputFormat.parse(formattedDateI), outputFormat.parse(formattedDateF)
+            );
+
+            preencheTable(allDoacoes);
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(null, "Valores incorretos, preencha corretamente. Exemplo: 03/10/2023 " + e.getMessage());
+        } catch (PersistenceException e) {
+            JOptionPane.showMessageDialog(null, "Não foi possível acessar o banco de dados para consultar as doações. " + e.getMessage());
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
+    private void jffDataFimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jffDataFimActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
+    }//GEN-LAST:event_jffDataFimActionPerformed
 
     private void btnVoltar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltar2ActionPerformed
         this.dispose();
@@ -257,7 +293,7 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
             allDoacoes = new DoacaoDao().buscarTodos();
             preencheTable(allDoacoes);
         } catch (PersistenceException ex) {
-            JOptionPane.showMessageDialog(null, "Não foi possivel acessar o banco de dados para consultar os produtos. " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Não foi possivel acessar o banco de dados para consultar as doações. " + ex.getMessage());
         }
     }//GEN-LAST:event_formWindowOpened
 
@@ -343,8 +379,6 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
     private javax.swing.JButton btnVoltar2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -352,5 +386,7 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JFormattedTextField jffDataFim;
+    private javax.swing.JFormattedTextField jffDataInicio;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,6 +9,7 @@ import org.sdp.util.JPAUtil;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ProdutoDao implements IGenericDAO<Produto, Long> {
@@ -127,6 +128,7 @@ public class ProdutoDao implements IGenericDAO<Produto, Long> {
 
         return produtos;
     }
+
 
     public List<Produto> buscarPorNomeProduto(String nomeProduto){
         List<Produto> produtos = new ArrayList<>();

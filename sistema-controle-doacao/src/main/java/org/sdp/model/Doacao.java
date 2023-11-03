@@ -27,8 +27,8 @@ public class Doacao {
     @OneToMany(mappedBy = "doacao")
     private List<DoacaoProduto> produtos;
 
-    @Temporal(TemporalType.TIMESTAMP) // Mapeia o atributo de data como LocalDateTime
-    @Column(name = "data_doacao") // Nome da coluna no banco de dados
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "data_doacao")
     private Date dataDoacao;
 
     @Column(name = "valor_doacao")

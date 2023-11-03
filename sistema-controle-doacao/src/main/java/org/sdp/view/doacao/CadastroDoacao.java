@@ -364,8 +364,6 @@ public class CadastroDoacao extends javax.swing.JDialog {
             Doacao d = new Doacao(null, ETipoDoacao.Produtos, dps, date, 0);
             d = new DoacaoDao().cadastrarComRetorno(d);
 
-
-
             int i = 0;
             for (Produto prod : allProdutosSelected) {
                 DoacaoProduto dp = new DoacaoProduto(null, d, prod, Integer.parseInt((String) jTProdutosSelecionados.getValueAt(i,1)));
@@ -396,6 +394,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
             jlPesquisarProduto.setVisible(false);
             jTProdutosCadastrados.setVisible(false);
             jTProdutosSelecionados.setVisible(false);
+            jBtnRemoverSelecionados.setVisible(false);
         }else{
             jBtnSalvarValor.setVisible(false);
             CampoValor.setVisible(false);
@@ -408,6 +407,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
             jlPesquisarProduto.setVisible(true);
             jTProdutosCadastrados.setVisible(true);
             jTProdutosSelecionados.setVisible(true);
+            jBtnRemoverSelecionados.setVisible(true);
         }
     }//GEN-LAST:event_cbTipoDoacaoActionPerformed
 

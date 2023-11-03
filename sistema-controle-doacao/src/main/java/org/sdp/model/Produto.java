@@ -33,6 +33,14 @@ public class Produto {
         this.valorProduto = valorProduto;
     }
 
+    public List<DoacaoProduto> getDoacoes() {
+        return doacoes;
+    }
+
+    public void setDoacoes(List<DoacaoProduto> doacoes) {
+        this.doacoes = doacoes;
+    }
+
     public Long getId() {
         return id;
     }

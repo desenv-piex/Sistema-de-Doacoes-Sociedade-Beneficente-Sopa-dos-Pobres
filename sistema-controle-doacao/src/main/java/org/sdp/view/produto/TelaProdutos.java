@@ -4,14 +4,12 @@
  */
 package org.sdp.view.produto;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.PersistenceException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.sdp.database.dao.produto.ProdutoDao;
 import org.sdp.model.Produto;
-import org.sdp.util.ExcelExporter;
 
 /**
  *

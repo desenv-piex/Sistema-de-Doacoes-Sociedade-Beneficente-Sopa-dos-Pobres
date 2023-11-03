@@ -8,7 +8,6 @@ import javax.persistence.PersistenceException;
 import javax.swing.JOptionPane;
 import org.sdp.database.dao.produto.ProdutoDao;
 import org.sdp.model.Produto;
-import org.sdp.util.ExcelExporter;
 
 /**
  *

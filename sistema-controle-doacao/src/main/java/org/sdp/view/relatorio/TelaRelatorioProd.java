@@ -4,6 +4,16 @@
  */
 package org.sdp.view.relatorio;
 
+import org.sdp.model.Produto;
+
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import javax.persistence.PersistenceException;
+import javax.swing.JOptionPane;
+import org.sdp.database.dao.produto.ProdutoDao;
+import org.sdp.model.DoacaoProduto;
+import org.sdp.util.ExcelExporterProdutos;
+
 /**
  *
  * @author Elton Oliveira
@@ -40,31 +50,42 @@ public class TelaRelatorioProd extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         btnVoltar2 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        Download = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(null);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(254, 240, 218));
 
-        Produtos.setForeground(java.awt.Color.white);
         Produtos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Nome", "Valor Unitario", "Data Inserção"
+                "Nome", "Valor Unitario", "Quantidade Doada", "ValorTotal"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(Produtos);
@@ -156,10 +177,15 @@ public class TelaRelatorioProd extends javax.swing.JDialog {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(207, 180, 120));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/baixarRelatorio.png"))); // NOI18N
-        jButton2.setText("Download");
+        Download.setBackground(new java.awt.Color(207, 180, 120));
+        Download.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Download.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/baixarRelatorio.png"))); // NOI18N
+        Download.setText("Download");
+        Download.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DownloadActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -174,7 +200,7 @@ public class TelaRelatorioProd extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
+                        .addComponent(Download)
                         .addGap(8, 8, 8))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
@@ -195,7 +221,7 @@ public class TelaRelatorioProd extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnVoltar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(Download, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
         );
 
@@ -226,9 +252,52 @@ public class TelaRelatorioProd extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnVoltar2ActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        try {
+            allProdutos = new ProdutoDao().buscarTodosGroupBy();
+            
+            preencheTable(allProdutos);
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel acessar o banco de dados para consultar os produtos. " + ex.getMessage());
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void DownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DownloadActionPerformed
+        ExcelExporterProdutos.exportToExcel(allProdutos);
+    }//GEN-LAST:event_DownloadActionPerformed
+
     /**
      * @param args the command line arguments
      */
+
+    private List<Produto> allProdutos;
+
+    public List<Produto> getAllProdutos() {
+        return allProdutos;
+    }
+
+
+    private void preencheTable(List<Produto> allProdutos){
+        DefaultTableModel dtm = (DefaultTableModel) Produtos.getModel();
+
+        while(dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
+
+        for(Produto p : allProdutos) {
+            int qtdDoada = 0;
+            double valorTotal = 0;
+            for (DoacaoProduto dp : p.getDoacoes()){
+                qtdDoada += dp.getQuantidade();
+                valorTotal += dp.getQuantidade() * p.getValorProduto();
+            }
+            
+            String[] linha = { p.getNomeProduto(), p.getValorProduto()+"", qtdDoada+"", valorTotal+""};
+            dtm.addRow(linha);
+        }
+    }
+
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -270,10 +339,10 @@ public class TelaRelatorioProd extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Download;
     private javax.swing.JTable Produtos;
     private javax.swing.JButton btnVoltar2;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel2;

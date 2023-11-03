@@ -105,6 +105,20 @@ public class ProdutoDao implements IGenericDAO<Produto, Long> {
         return produtos;
     }
 
+    public List<Produto> buscarTodosGroupBy() throws PersistenceException {
+        List<Produto> produtos = new ArrayList<>();
+        try{
+            String jpql = "SELECT DISTINCT p FROM Produto p LEFT JOIN FETCH p.doacoes";
+            produtos = this.em.createQuery(jpql, Produto.class).getResultList();
+        } catch (PersistenceException e) {
+            throw e;
+        } finally {
+            this.em.close();
+        }
+
+        return produtos;
+    }
+
     public List<Produto> buscarPorNomeProduto(String nomeProduto){
         List<Produto> produtos = new ArrayList<>();
 

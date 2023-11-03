@@ -12,8 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import org.sdp.database.dao.doacao.DoacaoDao;
 import org.sdp.model.Doacao;
 import org.sdp.model.DoacaoProduto;
-import org.sdp.model.Produto;
-import org.sdp.util.ExcelExporter;
+import org.sdp.util.ExcelExporterDoacoes;
 
 /**
  *
@@ -263,7 +262,7 @@ public class TelaRelatorioDoac extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ExcelExporter.exportToExcel(allDoacoes);
+        ExcelExporterDoacoes.exportToExcel(allDoacoes);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     

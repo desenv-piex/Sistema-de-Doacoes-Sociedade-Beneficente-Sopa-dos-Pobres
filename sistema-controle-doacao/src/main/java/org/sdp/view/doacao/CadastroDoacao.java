@@ -365,6 +365,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
             d = new DoacaoDao().cadastrarComRetorno(d);
 
 
+
             int i = 0;
             for (Produto prod : allProdutosSelected) {
                 DoacaoProduto dp = new DoacaoProduto(null, d, prod, Integer.parseInt((String) jTProdutosSelecionados.getValueAt(i,1)));

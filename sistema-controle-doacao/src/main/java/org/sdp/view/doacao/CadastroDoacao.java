@@ -55,21 +55,22 @@ public class CadastroDoacao extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         cbTipoDoacao = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTProdutosSelecionados = new javax.swing.JTable();
-        jLProdutos1 = new javax.swing.JLabel();
-        jlPesquisarProduto = new javax.swing.JTextField();
-        jBPesquisa1 = new javax.swing.JButton();
-        jBtnSelecionar = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTProdutosCadastrados = new javax.swing.JTable();
-        jlProdutos2 = new javax.swing.JLabel();
         labelvalor = new javax.swing.JLabel();
         jBtnSalvarValor = new javax.swing.JButton();
-        jBtnSalvarPRoduto = new javax.swing.JButton();
         btnVoltar = new javax.swing.JButton();
-        jBtnRemoverSelecionados = new javax.swing.JButton();
         CampoValor = new javax.swing.JFormattedTextField();
+        PainelDProduto = new javax.swing.JPanel();
+        jlProdutos2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTProdutosSelecionados = new javax.swing.JTable();
+        jBtnRemoverSelecionados = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTProdutosCadastrados = new javax.swing.JTable();
+        jBtnSelecionar = new javax.swing.JButton();
+        jBtnSalvarPRoduto = new javax.swing.JButton();
+        jlPesquisarProduto = new javax.swing.JTextField();
+        jLProdutos1 = new javax.swing.JLabel();
+        jBPesquisa1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -89,6 +90,36 @@ public class CadastroDoacao extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Tipo de Doação:");
+
+        labelvalor.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        labelvalor.setText("Valor Doado:");
+
+        jBtnSalvarValor.setBackground(new java.awt.Color(117, 181, 47));
+        jBtnSalvarValor.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jBtnSalvarValor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/doacao.png"))); // NOI18N
+        jBtnSalvarValor.setText("Salvar");
+        jBtnSalvarValor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnSalvarValorActionPerformed(evt);
+            }
+        });
+
+        btnVoltar.setBackground(new java.awt.Color(207, 180, 120));
+        btnVoltar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/saida2.png"))); // NOI18N
+        btnVoltar.setText("Sair");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
+
+        CampoValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+
+        PainelDProduto.setBackground(new java.awt.Color(254, 240, 218));
+
+        jlProdutos2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jlProdutos2.setText("Produtos doados:");
 
         jTProdutosSelecionados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTProdutosSelecionados.setModel(new javax.swing.table.DefaultTableModel(
@@ -116,26 +147,13 @@ public class CadastroDoacao extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jTProdutosSelecionados);
 
-        jLProdutos1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLProdutos1.setText("Selecionar Produto(s):");
-
-        jBPesquisa1.setBackground(new java.awt.Color(218, 209, 187));
-        jBPesquisa1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jBPesquisa1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pesquisar.png"))); // NOI18N
-        jBPesquisa1.setText("Pesquisar");
-        jBPesquisa1.addActionListener(new java.awt.event.ActionListener() {
+        jBtnRemoverSelecionados.setBackground(new java.awt.Color(255, 153, 153));
+        jBtnRemoverSelecionados.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jBtnRemoverSelecionados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancel.png"))); // NOI18N
+        jBtnRemoverSelecionados.setText("Remover selecionados");
+        jBtnRemoverSelecionados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBPesquisa1ActionPerformed(evt);
-            }
-        });
-
-        jBtnSelecionar.setBackground(new java.awt.Color(206, 187, 159));
-        jBtnSelecionar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jBtnSelecionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/selecionar.png"))); // NOI18N
-        jBtnSelecionar.setText("Selecionar");
-        jBtnSelecionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBtnSelecionarActionPerformed(evt);
+                jBtnRemoverSelecionadosActionPerformed(evt);
             }
         });
 
@@ -161,19 +179,13 @@ public class CadastroDoacao extends javax.swing.JDialog {
         });
         jScrollPane2.setViewportView(jTProdutosCadastrados);
 
-        jlProdutos2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jlProdutos2.setText("Produtos doados:");
-
-        labelvalor.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        labelvalor.setText("Valor Doado:");
-
-        jBtnSalvarValor.setBackground(new java.awt.Color(117, 181, 47));
-        jBtnSalvarValor.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jBtnSalvarValor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/doacao.png"))); // NOI18N
-        jBtnSalvarValor.setText("Salvar");
-        jBtnSalvarValor.addActionListener(new java.awt.event.ActionListener() {
+        jBtnSelecionar.setBackground(new java.awt.Color(206, 187, 159));
+        jBtnSelecionar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jBtnSelecionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/selecionar.png"))); // NOI18N
+        jBtnSelecionar.setText("Selecionar");
+        jBtnSelecionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBtnSalvarValorActionPerformed(evt);
+                jBtnSelecionarActionPerformed(evt);
             }
         });
 
@@ -187,69 +199,93 @@ public class CadastroDoacao extends javax.swing.JDialog {
             }
         });
 
-        btnVoltar.setBackground(new java.awt.Color(207, 180, 120));
-        btnVoltar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/saida2.png"))); // NOI18N
-        btnVoltar.setText("Sair");
-        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+        jLProdutos1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLProdutos1.setText("Selecionar Produto(s):");
+
+        jBPesquisa1.setBackground(new java.awt.Color(218, 209, 187));
+        jBPesquisa1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jBPesquisa1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pesquisar.png"))); // NOI18N
+        jBPesquisa1.setText("Pesquisar");
+        jBPesquisa1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVoltarActionPerformed(evt);
+                jBPesquisa1ActionPerformed(evt);
             }
         });
 
-        jBtnRemoverSelecionados.setBackground(new java.awt.Color(255, 153, 153));
-        jBtnRemoverSelecionados.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jBtnRemoverSelecionados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancel.png"))); // NOI18N
-        jBtnRemoverSelecionados.setText("Remover selecionados");
-        jBtnRemoverSelecionados.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBtnRemoverSelecionadosActionPerformed(evt);
-            }
-        });
-
-        CampoValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        javax.swing.GroupLayout PainelDProdutoLayout = new javax.swing.GroupLayout(PainelDProduto);
+        PainelDProduto.setLayout(PainelDProdutoLayout);
+        PainelDProdutoLayout.setHorizontalGroup(
+            PainelDProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PainelDProdutoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PainelDProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PainelDProdutoLayout.createSequentialGroup()
+                        .addGroup(PainelDProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PainelDProdutoLayout.createSequentialGroup()
+                                .addComponent(jlProdutos2, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jBtnRemoverSelecionados))
+                            .addGroup(PainelDProdutoLayout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jBtnSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(PainelDProdutoLayout.createSequentialGroup()
+                                .addComponent(jLProdutos1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(PainelDProdutoLayout.createSequentialGroup()
+                                .addComponent(jlPesquisarProduto)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jBPesquisa1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PainelDProdutoLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jBtnSalvarPRoduto, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)))
+        );
+        PainelDProdutoLayout.setVerticalGroup(
+            PainelDProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PainelDProdutoLayout.createSequentialGroup()
+                .addComponent(jLProdutos1)
+                .addGap(3, 3, 3)
+                .addGroup(PainelDProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlPesquisarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBPesquisa1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(PainelDProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBtnSelecionar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PainelDProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jBtnRemoverSelecionados)
+                    .addComponent(jlProdutos2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBtnSalvarPRoduto, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(97, 97, 97))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(PainelDProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jBtnSalvarPRoduto, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbTipoDoacao, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(30, 30, 30)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(labelvalor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(CampoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jBtnSalvarValor, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(6, 6, 6))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbTipoDoacao, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlPesquisarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLProdutos1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jBPesquisa1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jBtnSelecionar, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jlProdutos2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CampoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBtnSalvarValor, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBtnRemoverSelecionados)))
+                        .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelvalor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -262,31 +298,12 @@ public class CadastroDoacao extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbTipoDoacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CampoValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBtnSalvarValor)
-                    .addComponent(CampoValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLProdutos1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jlPesquisarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jBPesquisa1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBtnSelecionar)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jBtnRemoverSelecionados)
-                    .addComponent(jlProdutos2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnVoltar, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-                    .addComponent(jBtnSalvarPRoduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(btnVoltar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addComponent(PainelDProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -395,6 +412,8 @@ public class CadastroDoacao extends javax.swing.JDialog {
             jTProdutosCadastrados.setVisible(false);
             jTProdutosSelecionados.setVisible(false);
             jBtnRemoverSelecionados.setVisible(false);
+            PainelDProduto.setVisible(false);
+            this.setSize(635, 160);
         }else{
             jBtnSalvarValor.setVisible(false);
             CampoValor.setVisible(false);
@@ -408,6 +427,8 @@ public class CadastroDoacao extends javax.swing.JDialog {
             jTProdutosCadastrados.setVisible(true);
             jTProdutosSelecionados.setVisible(true);
             jBtnRemoverSelecionados.setVisible(true);
+            PainelDProduto.setVisible(true);
+            this.setSize(645, 700);
         }
     }//GEN-LAST:event_cbTipoDoacaoActionPerformed
 
@@ -546,6 +567,7 @@ public class CadastroDoacao extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField CampoValor;
+    private javax.swing.JPanel PainelDProduto;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JComboBox<String> cbTipoDoacao;
     private javax.swing.JButton jBPesquisa1;

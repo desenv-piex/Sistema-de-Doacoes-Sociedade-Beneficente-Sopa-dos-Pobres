@@ -2,9 +2,9 @@
 
 ``` Projeto de extensão da faculdade vianna junior (fivj) com intuito de contribuir para a sociedade beneficente da sopa dos pobres ```
 
-## Sobre o Sistema
+## Objetivo do Sistema
 
-O sistema é um facilitador para a instuição, sendo uma aplicação de cadastro de produtos em que o usuario consegue realizar cadastros, manipular dados, gerar relatorios e buscar dentro dos mesmos ultilizando filtros inteligentes. 
+Projeto que tem como objetivo atender às necessidades da instituição, melhorando a eficiência no controle de doações, permitindo uma visualização mais clara dos dados e aprimorando sua presença online.Ao final, esperamos alcançar um sistema de controle de doações funcional e eficiente que seja aptos a ser manuseado pela equipe capacitada e um site que auxilie a instituição a ter maior presença online permitindo o maior alcance de diferentes públicos, potencial doadores e beneficiários, garantindo assim, a satisfação das partes interessadas.
 
 ## Tecnologias usadas
 

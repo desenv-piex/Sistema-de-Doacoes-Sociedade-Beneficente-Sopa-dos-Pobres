@@ -1,0 +1,23 @@
+<assembly>
+    <id>project</id>
+    <formats>
+        <format>jar</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.outputDirectory}</directory> <!-- Diretório onde ficam as classes compiladas do projeto -->
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>**/*.class</include> <!-- Inclui todas as classes compiladas -->
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources</directory> <!-- Diretório onde ficam os recursos do projeto -->
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>**/*</include> <!-- Inclui todos os arquivos dentro da pasta resources -->
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

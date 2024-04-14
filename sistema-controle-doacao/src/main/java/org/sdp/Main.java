@@ -1,8 +1,5 @@
 package org.sdp;
 
-
-import org.sdp.database.dao.usuario.UsuarioDao;
-import org.sdp.model.Usuario;
 import org.sdp.view.login.TelaLogin;
 
 import javax.swing.*;
